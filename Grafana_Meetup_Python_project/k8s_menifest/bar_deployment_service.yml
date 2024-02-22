@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-optl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-optl
+  template:
+    metadata:
+      labels: 
+        app: python-optl
+    spec:
+      containers:
+        - name: python-optl-container
+          image: 292603306378.dkr.ecr.ap-south-1.amazonaws.com/bar-grafana:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: regcred
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-optl
+spec:
+  type: NodePort
+  selector:
+    app: python-optl
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30095

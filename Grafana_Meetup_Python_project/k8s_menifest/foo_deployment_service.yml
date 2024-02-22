@@ -1,0 +1,43 @@
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: foo-optl
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: foo-optl
+#   template:
+#     metadata:
+#       labels: 
+#         app: foo-optl
+#     spec:
+#       containers:
+#         - name: foo-optl-container
+#           image: 292603306378.dkr.ecr.ap-south-1.amazonaws.com/foo-grafana:latest
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 6000
+#         - name: python-optl-container
+#           image: 292603306378.dkr.ecr.ap-south-1.amazonaws.com/bar-grafana:latest
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 5000
+#       imagePullSecrets:
+#         - name: regcred
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: foo-optl
+# spec:
+#   type: NodePort
+#   selector:
+#     app: foo-optl
+#   ports:
+#     - protocol: TCP
+#       port: 6000
+#       targetPort: 6000
+#       nodePort: 30096
